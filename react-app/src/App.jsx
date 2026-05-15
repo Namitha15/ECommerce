@@ -9,11 +9,9 @@ import Header from './components/Header.jsx';
 import About from './Pages/About.jsx';
 import Contact from './Pages/Contact.jsx';
 import Dashboard from './Pages/Dashboard.jsx';
-//import Setting from './Pages/Setting.jsx';
 import SearchBox from './components/SearchBox.jsx';
 import ThemeProvider from './context/ThemeContext.jsx';
 import UserLogin from './Pages/UserLogin.jsx';
-
 import Sidebar from './components/Sidebar.jsx';
 
 function App() {
@@ -23,11 +21,13 @@ function App() {
   const [search, setSearch] = useState("");
   const [IsLogin, setIsLogin] = useState(false);
 
-
   const addToCart = (product) => {
     setCart([...cart, product]);
   };
-
+  const removeCart = (id) => {
+    const remove = cart.filter(p => p.id !== Number(id));
+    setCart(remove);
+  }
   useEffect(() => {
     async function fetchData() {
       try {
@@ -47,46 +47,38 @@ function App() {
   }
 
   return (
-    <>
-
-      <ThemeProvider>
-        <BrowserRouter>
-
+    <ThemeProvider>
+      <BrowserRouter>
+        {!IsLogin ? (
           <Routes>
-            {!IsLogin ?
-              (
-                <Route path='*' element={<UserLogin onLogin={() =>
-                  setIsLogin(true)} />} />
-              ) :
-              (
-                <>
-                  <Header cartCount={cart.length} />
-                  <div className="main-layout">
-                    <Sidebar />
-                    <div className="main-content">
-                      <SearchBox onSearch={setSearch} />
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/" element={<ProductList products={products} />} />
-                      <Route path="/category/:categoryName" element={<ProductList products={products} searchItem={search} />} />
-                      <Route path="/products/:id" element={<ProductDetail products={products} addToCart={addToCart} />} />
-                      <Route path="/cart" element={<Cart cart={cart} />} />
-                      <Route path="/about" element={<About />} />
-                      <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<UserLogin onLogin={() => setIsLogin(true)} />} />
+          </Routes>
+        ) : (
+          <div className="app-container">
+            <Header cartCount={cart.length} />
+            <div className="main-layout">
+              <Sidebar />
+              <div className="main-content">
+                <SearchBox onSearch={setSearch} />
+                <Routes>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/" element={<ProductList products={products} searchItem={search} />} />
+                  <Route path="/category/:categoryName" element={<ProductList products={products} searchItem={search} />} />
+                  <Route path="/products/:id" element={<ProductDetail products={products} addToCart={addToCart} removeCart={removeCart} />} />
 
-
-                    </>
-
-                    )
-                }
-
-                  </Routes>
-                </div>
+                  <Route path="/cart" element={<Cart cart={cart} />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                </Routes>
+              </div>
+            </div>
           </div>
-        </BrowserRouter>
-      </ThemeProvider>
-    </>
+        )}
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
 export default App;
+
 

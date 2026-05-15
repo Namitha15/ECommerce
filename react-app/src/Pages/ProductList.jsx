@@ -1,11 +1,8 @@
 import { useParams } from "react-router-dom";
-import ProductCard from "../components/ProductCard.jsx"
-
+import ProductCard from "../components/ProductCard.jsx";
 function ProductList({ products, searchTerm }) {
     const { categoryName } = useParams();
-
     let filteredProducts = products;
-
     // Filter by category
     if (categoryName === "clothing") {
         filteredProducts = products.filter(p => p.category === "men's clothing" || p.category === "women's clothing");
@@ -14,14 +11,12 @@ function ProductList({ products, searchTerm }) {
     } else if (categoryName === "electronics") {
         filteredProducts = products.filter(p => p.category === "electronics");
     }
-
     // Filter by search term
     if (searchTerm) {
-        filteredProducts = filteredProducts.filter(p => 
+        filteredProducts = filteredProducts.filter(p =>
             p.title.toLowerCase().includes(searchTerm.toLowerCase())
         );
     }
-
     return (
         <div className="container">
             <h1 className="category-title">
@@ -35,5 +30,4 @@ function ProductList({ products, searchTerm }) {
         </div>
     );
 }
-
 export default ProductList;

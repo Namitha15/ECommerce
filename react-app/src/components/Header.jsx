@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link, Outlet } from "react-router-dom"
 import ThemeProvider from '../context/ThemeContext'
-import { useContext } from 'react'
-import { createContext } from 'react-router-dom'
+import { useContext, createContext } from 'react'
+
 import { themeContext } from '../context/ThemeContext';
 
 const Header = ({ cartCount, }) => {
