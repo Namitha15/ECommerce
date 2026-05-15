@@ -29,6 +29,7 @@ function App() {
     setCart(remove);
   }
 
+
   useEffect(() => {
     async function fetchData() {
       try {
