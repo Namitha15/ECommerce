@@ -28,6 +28,7 @@ function App() {
     const remove = cart.filter(p => p.id !== Number(id));
     setCart(remove);
   }
+
   useEffect(() => {
     async function fetchData() {
       try {
